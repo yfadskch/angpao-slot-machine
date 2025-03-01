@@ -203,12 +203,19 @@ function startRedPacketRain() {
     const redPacketRain = document.getElementById('redPacketRain');
     redPacketRain.style.display = 'flex';
 
-    // Generate 9 to 15 red packets
+      // Generate 9 to 15 red packets
     const packetCount = Math.floor(Math.random() * 7) + 9;
     for (let i = 0; i < packetCount; i++) {
         const packet = document.createElement('div');
         packet.className = 'red-packet';
-        packet.style.left = `${Math.random() * 90 + 5}%`; // Random horizontal position
+
+        // Random horizontal position (5% to 95%)
+        packet.style.left = `${Math.random() * 90 + 5}%`;
+
+        // Random animation duration (3s to 8s)
+        const animationDuration = `${Math.random() * 5 + 3}s`;
+        packet.style.animationDuration = animationDuration;
+
         packet.textContent = '🧧';
         packet.addEventListener('click', () => handleRedPacketClick(packet));
         redPacketRain.appendChild(packet);
