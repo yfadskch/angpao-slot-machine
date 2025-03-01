@@ -70,9 +70,8 @@ function startSpin() {
     isSpinning = true;
     disableControls(true);
 
-    if (freeSpins > 0) {
-        freeSpins--;
-    } else {
+    // Only deduct balance if not using free spins
+    if (freeSpins === 0) {
         balance -= bet;
     }
     document.getElementById('balance').textContent = balance;
@@ -304,8 +303,8 @@ function handleFreeSpinOptionClick(button) {
 // Start free spins
 function startFreeSpin() {
     if (freeSpins > 0) {
-        startSpin();
-        freeSpins--;
+        startSpin(); // Start the spin
+        freeSpins--; // Decrement free spins by 1
         document.getElementById('freespins').textContent = freeSpins;
 
         // If there are remaining free spins, continue
