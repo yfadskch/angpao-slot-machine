@@ -165,7 +165,7 @@ body {
     100% { opacity: 0; transform: translate(-50%, -100px); }
 }
 
-/* 红包雨样式 */
+/* Red Packet Rain Styles */
 .red-packet-rain {
     position: fixed;
     top: 0;
@@ -192,7 +192,7 @@ body {
     100% { top: 100%; }
 }
 
-/* 盲盒式免费旋转弹窗样式 */
+/* Free Spin Popup Styles */
 .free-spin-popup {
     position: fixed;
     top: 0;

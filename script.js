@@ -7,38 +7,38 @@ let missCount = 0;
 const symbols = ["💰", "🎉", "⭐", "💎", "🎁", "🧧", "🎰"];
 const AUTO_SPIN_DELAY = 1500;
 
-// 确保页面加载完成后绑定事件
+// Ensure events are bound after the page loads
 window.addEventListener('load', () => {
     document.getElementById('spinButton').addEventListener('click', startSpin);
     document.getElementById('autoSpinButton').addEventListener('click', toggleAutoSpin);
 });
 
 function toggleAutoSpin() {
-    if (isSpinning) return; // 防止冲突
+    if (isSpinning) return; // Prevent conflicts
     
     isAutoSpin = !isAutoSpin;
     const btn = document.getElementById('autoSpinButton');
     
     if (isAutoSpin) {
         btn.classList.add('active');
-        btn.textContent = '⏹ 停止自动';
+        btn.textContent = '⏹ Stop Auto';
         startAutoSpin();
     } else {
         stopAutoSpin();
         btn.classList.remove('active');
-        btn.textContent = '⚡ 自动旋转';
+        btn.textContent = '⚡ Auto Spin';
     }
 }
 
 function startAutoSpin() {
-    // 先停止已有定时器
+    // Clear existing interval
     if (autoSpinInterval) clearInterval(autoSpinInterval);
     
     autoSpinInterval = setInterval(() => {
         if (canSpin()) startSpin();
         else {
             stopAutoSpin();
-            alert('余额不足，自动停止');
+            alert('Insufficient balance, auto spin stopped');
         }
     }, AUTO_SPIN_DELAY);
 }
@@ -48,7 +48,7 @@ function stopAutoSpin() {
     isAutoSpin = false;
     const btn = document.getElementById('autoSpinButton');
     btn.classList.remove('active');
-    btn.textContent = '⚡ 自动旋转';
+    btn.textContent = '⚡ Auto Spin';
 }
 
 function canSpin() {
@@ -63,7 +63,7 @@ function startSpin() {
     
     if (!canSpin()) {
         if (isAutoSpin) stopAutoSpin();
-        alert('无法旋转！余额不足');
+        alert('Cannot spin! Insufficient balance');
         return;
     }
 
@@ -117,35 +117,35 @@ function checkWin(results, bet) {
         const symbol = results[0];
         let winAmount = 0;
 
-        // 根据符号类型计算奖金
+        // Calculate win amount based on symbol
         switch (symbol) {
             case '💰':
-                winAmount = bet * 1; // 1 倍
+                winAmount = bet * 1; // 1x
                 break;
             case '🎉':
-                winAmount = bet * 2; // 2 倍
+                winAmount = bet * 2; // 2x
                 break;
             case '⭐':
-                winAmount = bet * 3; // 3 倍
+                winAmount = bet * 3; // 3x
                 break;
             case '💎':
-                winAmount = bet * 15; // 15 倍
+                winAmount = bet * 15; // 15x
                 break;
             case '🎁':
-                // 暂停自动旋转
+                // Pause auto spin
                 if (isAutoSpin) stopAutoSpin();
-                // 触发盲盒式免费旋转弹窗
+                // Show free spin popup
                 showFreeSpinPopup();
                 break;
             case '🧧':
-                // 暂停自动旋转
+                // Pause auto spin
                 if (isAutoSpin) stopAutoSpin();
-                // 触发红包雨
+                // Start red packet rain
                 startRedPacketRain();
                 break;
             case '🎰':
-                // 随机 50 倍到 125 倍
-                const randomMultiplier = Math.floor(Math.random() * 76) + 50; // 50 到 125
+                // Random multiplier between 50x and 125x
+                const randomMultiplier = Math.floor(Math.random() * 76) + 50; // 50 to 125
                 winAmount = bet * randomMultiplier;
                 break;
         }
@@ -194,123 +194,123 @@ function showWinEffect(amount) {
 function showFreeSpinEffect(count) {
     const effect = document.createElement('div');
     effect.className = 'free-spin-effect';
-    effect.textContent = `获得 ${count} 次免费旋转！`;
+    effect.textContent = `You got ${count} free spins!`;
     document.body.appendChild(effect);
     setTimeout(() => effect.remove(), 3000);
 }
 
-// 红包雨逻辑
+// Red Packet Rain Logic
 function startRedPacketRain() {
     const redPacketRain = document.getElementById('redPacketRain');
     redPacketRain.style.display = 'flex';
 
-    // 生成 9 到 15 个红包
+    // Generate 9 to 15 red packets
     const packetCount = Math.floor(Math.random() * 7) + 9;
     for (let i = 0; i < packetCount; i++) {
         const packet = document.createElement('div');
         packet.className = 'red-packet';
-        packet.style.left = `${Math.random() * 90 + 5}%`; // 随机水平位置
+        packet.style.left = `${Math.random() * 90 + 5}%`; // Random horizontal position
         packet.textContent = '🧧';
         packet.addEventListener('click', () => handleRedPacketClick(packet));
         redPacketRain.appendChild(packet);
     }
 
-    // 10 秒后结束红包雨
+    // End red packet rain after 10 seconds
     setTimeout(() => {
         redPacketRain.style.display = 'none';
-        redPacketRain.innerHTML = ''; // 清空红包
+        redPacketRain.innerHTML = ''; // Clear red packets
 
-        // 如果之前是自动旋转模式，恢复自动旋转
+        // Resume auto spin if it was active
         if (isAutoSpin) startAutoSpin();
     }, 10000);
 }
 
-// 处理红包点击事件
+// Handle red packet click
 function handleRedPacketClick(packet) {
     const bet = parseInt(document.getElementById('betAmount').value);
     const rewardType = Math.random();
 
     if (rewardType < 0.6) {
-        // 60% 概率：小额奖金（1 倍到 5 倍）
+        // 60% chance: Small reward (1x to 5x)
         const multiplier = Math.floor(Math.random() * 5) + 1;
         const reward = bet * multiplier;
         balance += reward;
         document.getElementById('balance').textContent = balance;
         showWinEffect(reward);
     } else if (rewardType < 0.9) {
-        // 30% 概率：免费旋转（1 次、2 次或 3 次）
+        // 30% chance: Free spins (1, 2, or 3)
         const freeSpinCount = Math.floor(Math.random() * 3) + 1;
         freeSpins += freeSpinCount;
         document.getElementById('freespins').textContent = freeSpins;
         showFreeSpinEffect(freeSpinCount);
     } else {
-        // 10% 概率：特殊奖励（双倍奖金）
-        alert('恭喜！获得双倍奖金奖励！');
-        // 这里可以添加双倍奖金的逻辑
+        // 10% chance: Special reward (double bonus)
+        alert('Congratulations! You got a double bonus!');
+        // Add double bonus logic here if needed
     }
 
-    packet.remove(); // 点击后移除红包
+    packet.remove(); // Remove the packet after clicking
 }
 
-// 盲盒式免费旋转弹窗逻辑
+// Free Spin Popup Logic
 function showFreeSpinPopup() {
     const freeSpinPopup = document.getElementById('freeSpinPopup');
     const freeSpinButtons = freeSpinPopup.querySelectorAll('.free-spin-option');
 
-    // 随机分配免费旋转次数（5、8、11）
+    // Randomly assign free spin counts (5, 8, 11)
     const freeSpinOptions = [5, 8, 11];
     freeSpinButtons.forEach(button => {
         const randomIndex = Math.floor(Math.random() * freeSpinOptions.length);
         const freeSpinCount = freeSpinOptions.splice(randomIndex, 1)[0];
-        button.dataset.freeSpins = freeSpinCount; // 将次数存储在 data 属性中
+        button.dataset.freeSpins = freeSpinCount; // Store count in data attribute
     });
 
-    // 随机排列按钮位置
+    // Randomize button positions
     const buttonsContainer = freeSpinPopup.querySelector('.free-spin-buttons');
     for (let i = buttonsContainer.children.length; i >= 0; i--) {
         buttonsContainer.appendChild(buttonsContainer.children[Math.random() * i | 0]);
     }
 
-    // 显示弹窗
+    // Show popup
     freeSpinPopup.style.display = 'flex';
 
-    // 绑定按钮点击事件
+    // Bind button click events
     freeSpinButtons.forEach(button => {
         button.addEventListener('click', () => handleFreeSpinOptionClick(button));
     });
 }
 
-// 处理盲盒按钮点击事件
+// Handle free spin option click
 function handleFreeSpinOptionClick(button) {
     const freeSpinCount = parseInt(button.dataset.freeSpins);
     freeSpins += freeSpinCount;
     document.getElementById('freespins').textContent = freeSpins;
 
-    // 显示免费旋转次数
-    button.textContent = `${freeSpinCount} 次`;
+    // Show free spin count
+    button.textContent = `${freeSpinCount} spins`;
 
-    // 关闭弹窗
+    // Close popup after 2 seconds
     setTimeout(() => {
         document.getElementById('freeSpinPopup').style.display = 'none';
 
-        // 如果之前是自动旋转模式，恢复自动旋转
+        // Resume auto spin if it was active
         if (isAutoSpin) startAutoSpin();
     }, 2000);
 
-    // 开始免费旋转
+    // Start free spins
     startFreeSpin();
 }
 
-// 开始免费旋转
+// Start free spins
 function startFreeSpin() {
     if (freeSpins > 0) {
         startSpin();
         freeSpins--;
         document.getElementById('freespins').textContent = freeSpins;
 
-        // 如果还有免费旋转次数，继续旋转
+        // If there are remaining free spins, continue
         if (freeSpins > 0) {
-            setTimeout(startFreeSpin, 1500); // 延迟 1.5 秒后继续
+            setTimeout(startFreeSpin, 1500); // Delay 1.5 seconds before next spin
         }
     }
 }

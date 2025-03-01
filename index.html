@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>红包老虎机</title>
+    <title>Lucky Red Envelope Slot Machine</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="machine-container">
         <div class="header">
-            <h1>🎰 吉祥红包老虎机 🧧</h1>
+            <h1>🎰 Lucky Red Envelope Slot Machine 🧧</h1>
         </div>
         
         <div class="stats-panel">
             <div class="stat-item">
-                <span class="stat-label">余额</span>
+                <span class="stat-label">Balance</span>
                 <span class="stat-value" id="balance">200</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">免费旋转</span>
+                <span class="stat-label">Free Spins</span>
                 <span class="stat-value" id="freespins">0</span>
             </div>
         </div>
@@ -31,27 +31,27 @@
 
         <div class="control-panel">
             <select id="betAmount" class="bet-selector">
-                <option value="10">下注 10</option>
-                <option value="20" selected>下注 20</option>
-                <option value="50">下注 50</option>
+                <option value="10">Bet 10</option>
+                <option value="20" selected>Bet 20</option>
+                <option value="50">Bet 50</option>
             </select>
             <div class="button-group">
                 <button id="spinButton" class="spin-button">
-                    ▶ 单次旋转
+                    ▶ Spin
                 </button>
                 <button id="autoSpinButton" class="spin-button auto-spin">
-                    ⚡ 自动旋转
+                    ⚡ Auto Spin
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 红包雨弹窗 -->
+    <!-- Red Packet Rain Popup -->
     <div id="redPacketRain" class="red-packet-rain">
-        <!-- 红包会通过 JavaScript 动态生成 -->
+        <!-- Red packets will be dynamically generated here -->
     </div>
 
-    <!-- 盲盒式免费旋转弹窗 -->
+    <!-- Free Spin Popup -->
     <div id="freeSpinPopup" class="free-spin-popup">
         <div class="free-spin-buttons">
             <button class="free-spin-option">？</button>
