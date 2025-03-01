@@ -132,10 +132,14 @@ function checkWin(results, bet) {
                 winAmount = bet * 15; // 15 倍
                 break;
             case '🎁':
+                // 暂停自动旋转
+                if (isAutoSpin) stopAutoSpin();
                 // 触发盲盒式免费旋转弹窗
                 showFreeSpinPopup();
                 break;
             case '🧧':
+                // 暂停自动旋转
+                if (isAutoSpin) stopAutoSpin();
                 // 触发红包雨
                 startRedPacketRain();
                 break;
@@ -215,6 +219,9 @@ function startRedPacketRain() {
     setTimeout(() => {
         redPacketRain.style.display = 'none';
         redPacketRain.innerHTML = ''; // 清空红包
+
+        // 如果之前是自动旋转模式，恢复自动旋转
+        if (isAutoSpin) startAutoSpin();
     }, 10000);
 }
 
@@ -285,6 +292,9 @@ function handleFreeSpinOptionClick(button) {
     // 关闭弹窗
     setTimeout(() => {
         document.getElementById('freeSpinPopup').style.display = 'none';
+
+        // 如果之前是自动旋转模式，恢复自动旋转
+        if (isAutoSpin) startAutoSpin();
     }, 2000);
 
     // 开始免费旋转
