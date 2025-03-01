@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红包老虎机</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="machine-container">
+        <div class="header">
+            <h1>🎰 吉祥红包老虎机 🧧</h1>
+        </div>
+        
+        <div class="stats-panel">
+            <div class="stat-item">
+                <span class="stat-label">余额</span>
+                <span class="stat-value" id="balance">200</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">免费旋转</span>
+                <span class="stat-value" id="freespins">0</span>
+            </div>
+        </div>
+
+        <div class="slot-area">
+            <div class="slot" id="slot1">🎰</div>
+            <div class="slot" id="slot2">🎰</div>
+            <div class="slot" id="slot3">🎰</div>
+        </div>
+
+        <div class="control-panel">
+            <select id="betAmount" class="bet-selector">
+                <option value="10">下注 10</option>
+                <option value="20" selected>下注 20</option>
+                <option value="50">下注 50</option>
+            </select>
+            <div class="button-group">
+                <button id="spinButton" class="spin-button">
+                    ▶ 单次旋转
+                </button>
+                <button id="autoSpinButton" class="spin-button auto-spin">
+                    ⚡ 自动旋转
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 红包雨弹窗 -->
+    <div id="redPacketRain" class="red-packet-rain">
+        <!-- 红包会通过 JavaScript 动态生成 -->
+    </div>
+
+    <!-- 盲盒式免费旋转弹窗 -->
+    <div id="freeSpinPopup" class="free-spin-popup">
+        <div class="free-spin-buttons">
+            <button class="free-spin-option">？</button>
+            <button class="free-spin-option">？</button>
+            <button class="free-spin-option">？</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
