@@ -2,6 +2,7 @@ let balance = 200;
 let freeSpins = 0;
 let isSpinning = false;
 let isAutoSpin = false;
+let isFreeSpinActive = false; // 新增：标记是否处于免费旋转状态
 let autoSpinInterval;
 let missCount = 0;
 const symbols = ["💰", "🎉", "⭐", "💎", "🎁", "🧧", "🎰"];
@@ -133,8 +134,17 @@ function checkWin(results, bet) {
             case '🎁':
                 // Pause auto spin
                 if (isAutoSpin) stopAutoSpin();
-                // Show free spin popup
-                showFreeSpinPopup();
+
+                // If already in free spin mode, add free spins directly
+                if (isFreeSpinActive) {
+                    const freeSpinCount = Math.floor(Math.random() * 5) + 1; // Random 1 to 5 free spins
+                    freeSpins += freeSpinCount;
+                    document.getElementById('freespins').textContent = freeSpins;
+                    showFreeSpinEffect(freeSpinCount);
+                } else {
+                    // Show free spin popup
+                    showFreeSpinPopup();
+                }
                 break;
             case '🧧':
                 // Pause auto spin
@@ -203,7 +213,7 @@ function startRedPacketRain() {
     const redPacketRain = document.getElementById('redPacketRain');
     redPacketRain.style.display = 'flex';
 
-      // Generate 9 to 15 red packets
+    // Generate 9 to 15 red packets
     const packetCount = Math.floor(Math.random() * 7) + 9;
     for (let i = 0; i < packetCount; i++) {
         const packet = document.createElement('div');
@@ -299,12 +309,12 @@ function handleFreeSpinOptionClick(button) {
     setTimeout(() => {
         document.getElementById('freeSpinPopup').style.display = 'none';
 
-        // Resume auto spin if it was active
-        if (isAutoSpin) startAutoSpin();
-    }, 2000);
+        // Mark free spin as active
+        isFreeSpinActive = true;
 
-    // Start free spins
-    startFreeSpin();
+        // Start free spins
+        startFreeSpin();
+    }, 2000);
 }
 
 // Start free spins
@@ -317,6 +327,9 @@ function startFreeSpin() {
         // If there are remaining free spins, continue
         if (freeSpins > 0) {
             setTimeout(startFreeSpin, 1500); // Delay 1.5 seconds before next spin
+        } else {
+            // Free spins ended, reset the flag
+            isFreeSpinActive = false;
         }
     }
 }
