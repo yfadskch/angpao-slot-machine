@@ -2,7 +2,7 @@ let balance = 200;
 let freeSpins = 0;
 let isSpinning = false;
 let isAutoSpin = false;
-let isFreeSpinActive = false; // 新增：标记是否处于免费旋转状态
+let isFreeSpinActive = false; // 标记是否处于免费旋转状态
 let autoSpinInterval;
 let missCount = 0;
 const symbols = ["💰", "🎉", "⭐", "💎", "🎁", "🧧", "🎰"];
@@ -77,6 +77,9 @@ function startSpin() {
     }
     document.getElementById('balance').textContent = balance;
     document.getElementById('freespins').textContent = freeSpins;
+
+    // Reset slot display before starting animation
+    resetSlots();
 
     startSlotAnimation();
 
@@ -174,6 +177,15 @@ function checkWin(results, bet) {
 function startSlotAnimation() {
     document.querySelectorAll('.slot').forEach(slot => {
         slot.style.animation = 'slotShake 0.2s infinite';
+    });
+}
+
+function resetSlots() {
+    const slots = document.querySelectorAll('.slot');
+    slots.forEach(slot => {
+        slot.textContent = '🎰'; // Reset to default symbol
+        slot.style.animation = ''; // Clear animation
+        slot.classList.remove('result-animation'); // Remove result animation
     });
 }
 
