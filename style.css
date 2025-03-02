@@ -311,35 +311,4 @@ body {
     }
 
     .spin-button {
-        padding: 8px 16px;
-        font-size: 12px;
-    }
-
-    .red-packet {
-        font-size: 24px;
-    }
-
-    .free-spin-option {
-        padding: 10px 20px;
-        font-size: 16px;
-    }
-}
-
-/* 横屏提示显示逻辑 */
-@media (orientation: portrait) {
-    .orientation-warning {
-        display: block;
-    }
-    .machine-container {
-        display: none;
-    }
-}
-
-@media (orientation: landscape) {
-    .orientation-warning {
-        display: none;
-    }
-    .machine-container {
-        display: block;
-    }
-}
+        padding: 
