@@ -7,6 +7,7 @@ let autoSpinInterval;
 let missCount = 0;
 const symbols = ["💰", "🎉", "⭐", "💎", "🎁", "🧧", "🎰"];
 const SPIN_DELAY = 1500; // 旋转动画延迟时间（1.5 秒）
+const STOP_DELAY = 500; // 每个格子停止的间隔时间（0.5 秒）
 
 // Ensure events are bound after the page loads
 window.addEventListener('load', () => {
@@ -81,16 +82,14 @@ function startSpin() {
     // Reset slot display before starting animation
     resetSlots();
 
+    // Start spinning animation for all slots
     startSlotAnimation();
 
-    setTimeout(() => {
-        const results = generateResults();
-        updateSlots(results);
-        checkWin(results, bet);
-        
-        isSpinning = false;
-        disableControls(false);
-    }, SPIN_DELAY);
+    // Generate results
+    const results = generateResults();
+
+    // Stop slots one by one
+    stopSlotsOneByOne(results, bet);
 }
 
 function generateResults() {
@@ -189,14 +188,36 @@ function resetSlots() {
     });
 }
 
-function updateSlots(results) {
+function stopSlotsOneByOne(results, bet) {
     const slots = document.querySelectorAll('.slot');
-    slots.forEach((slot, index) => {
-        slot.style.animation = '';
-        slot.textContent = results[index];
-        slot.classList.add('result-animation');
-        setTimeout(() => slot.classList.remove('result-animation'), 500);
-    });
+
+    // Stop first slot
+    setTimeout(() => {
+        slots[0].style.animation = '';
+        slots[0].textContent = results[0];
+        slots[0].classList.add('result-animation');
+    }, STOP_DELAY);
+
+    // Stop second slot
+    setTimeout(() => {
+        slots[1].style.animation = '';
+        slots[1].textContent = results[1];
+        slots[1].classList.add('result-animation');
+    }, STOP_DELAY * 2);
+
+    // Stop third slot
+    setTimeout(() => {
+        slots[2].style.animation = '';
+        slots[2].textContent = results[2];
+        slots[2].classList.add('result-animation');
+
+        // After all slots stop, check win
+        setTimeout(() => {
+            checkWin(results, bet);
+            isSpinning = false;
+            disableControls(false);
+        }, 500); // Wait a bit before checking win
+    }, STOP_DELAY * 3);
 }
 
 function disableControls(disabled) {
