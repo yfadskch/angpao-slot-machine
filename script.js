@@ -291,6 +291,7 @@ function showFreeSpinPopup() {
         const randomIndex = Math.floor(Math.random() * freeSpinOptions.length);
         const freeSpinCount = freeSpinOptions.splice(randomIndex, 1)[0];
         button.dataset.freeSpins = freeSpinCount; // Store count in data attribute
+        button.textContent = '？'; // Reset button text to "？"
     });
 
     // Randomize button positions
@@ -304,18 +305,23 @@ function showFreeSpinPopup() {
 
     // Bind button click events
     freeSpinButtons.forEach(button => {
-        button.addEventListener('click', () => handleFreeSpinOptionClick(button));
+        button.addEventListener('click', () => handleFreeSpinOptionClick(button, freeSpinButtons));
     });
 }
 
 // Handle free spin option click
-function handleFreeSpinOptionClick(button) {
-    const freeSpinCount = parseInt(button.dataset.freeSpins);
+function handleFreeSpinOptionClick(selectedButton, allButtons) {
+    const freeSpinCount = parseInt(selectedButton.dataset.freeSpins);
     freeSpins += freeSpinCount;
     document.getElementById('freespins').textContent = freeSpins;
 
-    // Show free spin count
-    button.textContent = `${freeSpinCount} spins`;
+    // Show selected free spin count
+    selectedButton.textContent = `${freeSpinCount} spins`;
+
+    // Disable all buttons after selection
+    allButtons.forEach(button => {
+        button.disabled = true;
+    });
 
     // Close popup after 2 seconds
     setTimeout(() => {
