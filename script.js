@@ -6,7 +6,7 @@ let isFreeSpinActive = false; // 标记是否处于免费旋转状态
 let autoSpinInterval;
 let missCount = 0;
 const symbols = ["💰", "🎉", "⭐", "💎", "🎁", "🧧", "🎰"];
-const AUTO_SPIN_DELAY = 1500;
+const SPIN_DELAY = 1500; // 旋转动画延迟时间（1.5 秒）
 
 // Ensure events are bound after the page loads
 window.addEventListener('load', () => {
@@ -41,7 +41,7 @@ function startAutoSpin() {
             stopAutoSpin();
             alert('Insufficient balance, auto spin stopped');
         }
-    }, AUTO_SPIN_DELAY);
+    }, SPIN_DELAY);
 }
 
 function stopAutoSpin() {
@@ -90,7 +90,7 @@ function startSpin() {
         
         isSpinning = false;
         disableControls(false);
-    }, 1500);
+    }, SPIN_DELAY);
 }
 
 function generateResults() {
@@ -344,7 +344,7 @@ function startFreeSpin() {
 
         // If there are remaining free spins, continue
         if (freeSpins > 0) {
-            setTimeout(startFreeSpin, 1500); // Delay 1.5 seconds before next spin
+            setTimeout(startFreeSpin, SPIN_DELAY); // Delay 1.5 seconds before next spin
         } else {
             // Free spins ended, reset the flag
             isFreeSpinActive = false;
