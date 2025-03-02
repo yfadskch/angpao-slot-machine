@@ -248,8 +248,13 @@ function startRedPacketRain() {
         redPacketRain.style.display = 'none';
         redPacketRain.innerHTML = ''; // Clear red packets
 
-        // Resume auto spin if it was active
-        if (isAutoSpin) startAutoSpin();
+        // If free spins were obtained, prioritize them
+        if (freeSpins > 0) {
+            isFreeSpinActive = true;
+            startFreeSpin();
+        } else if (isAutoSpin) {
+            startAutoSpin();
+        }
     }, 10000);
 }
 
@@ -268,14 +273,7 @@ function handleRedPacketClick(packet) {
     } else if (rewardType < 0.9) {
         // 30% chance: Free spins (1, 2, or 3)
         const freeSpinCount = Math.floor(Math.random() * 3) + 1;
-
-        // If user already has free spins, use them first
-        if (freeSpins > 0) {
-            freeSpins += freeSpinCount;
-        } else {
-            freeSpins += freeSpinCount;
-        }
-
+        freeSpins += freeSpinCount;
         document.getElementById('freespins').textContent = freeSpins;
         showFreeSpinEffect(freeSpinCount);
     } else {
