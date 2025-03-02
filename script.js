@@ -268,7 +268,14 @@ function handleRedPacketClick(packet) {
     } else if (rewardType < 0.9) {
         // 30% chance: Free spins (1, 2, or 3)
         const freeSpinCount = Math.floor(Math.random() * 3) + 1;
-        freeSpins += freeSpinCount;
+
+        // If user already has free spins, use them first
+        if (freeSpins > 0) {
+            freeSpins += freeSpinCount;
+        } else {
+            freeSpins += freeSpinCount;
+        }
+
         document.getElementById('freespins').textContent = freeSpins;
         showFreeSpinEffect(freeSpinCount);
     } else {
