@@ -146,7 +146,7 @@ function checkWin(results, bet) {
                 // If already in free spin mode, add free spins directly
                 if (isFreeSpinActive) {
                     const freeSpinCount = Math.floor(Math.random() * 5) + 1; // Random 1 to 5 free spins
-                    freeSpins += freeSpinCount;
+                    freeSpins += freeSpinCount; // 累加免费旋转次数
                     document.getElementById('freespins').textContent = freeSpins;
                     showFreeSpinEffect(freeSpinCount);
                 } else {
