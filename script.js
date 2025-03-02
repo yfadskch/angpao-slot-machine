@@ -146,7 +146,7 @@ function checkWin(results, bet) {
                 // If already in free spin mode, add free spins directly
                 if (isFreeSpinActive) {
                     const freeSpinCount = Math.floor(Math.random() * 5) + 1; // Random 1 to 5 free spins
-                    freeSpins += freeSpinCount; // 累加免费旋转次数
+                    freeSpins += freeSpinCount;
                     document.getElementById('freespins').textContent = freeSpins;
                     showFreeSpinEffect(freeSpinCount);
                 } else {
@@ -289,7 +289,7 @@ function startRedPacketRain() {
             freeSpins += redPacketResults.freeSpins;
             document.getElementById('freespins').textContent = freeSpins;
             isFreeSpinActive = true;
-            startFreeSpin(redPacketResults.freeSpins);
+            startFreeSpin();
         } else if (isAutoSpin) {
             startAutoSpin();
         }
@@ -380,21 +380,20 @@ function handleFreeSpinOptionClick(selectedButton, allButtons) {
         isFreeSpinActive = true;
 
         // Start free spins
-        startFreeSpin(freeSpinCount);
+        startFreeSpin();
     }, 2000);
 }
 
 // Start free spins
-function startFreeSpin(totalFreeSpins) {
-    if (totalFreeSpins > 0) {
+function startFreeSpin() {
+    if (freeSpins > 0) {
         startSpin(); // Start the spin
-        totalFreeSpins--; // Decrement the remaining free spins
-        freeSpins = totalFreeSpins; // Update the global freeSpins variable
+        freeSpins--; // Decrement free spins by 1
         document.getElementById('freespins').textContent = freeSpins;
 
         // If there are remaining free spins, continue
-        if (totalFreeSpins > 0) {
-            setTimeout(() => startFreeSpin(totalFreeSpins), SPIN_DELAY); // Delay 1.5 seconds before next spin
+        if (freeSpins > 0) {
+            setTimeout(startFreeSpin, SPIN_DELAY); // Delay 1.5 seconds before next spin
         } else {
             // Free spins ended, reset the flag
             isFreeSpinActive = false;
