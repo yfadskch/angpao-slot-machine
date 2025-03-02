@@ -9,6 +9,12 @@ const symbols = ["💰", "🎉", "⭐", "💎", "🎁", "🧧", "🎰"];
 const SPIN_DELAY = 1500; // 旋转动画延迟时间（1.5 秒）
 const STOP_DELAY = 500; // 每个格子停止的间隔时间（0.5 秒）
 
+// 记录红包雨的结果
+let redPacketResults = {
+    redPackets: 0, // 获得的红包数量
+    freeSpins: 0, // 获得的免费旋转次数
+};
+
 // Ensure events are bound after the page loads
 window.addEventListener('load', () => {
     document.getElementById('spinButton').addEventListener('click', startSpin);
@@ -246,6 +252,12 @@ function startRedPacketRain() {
     const redPacketRain = document.getElementById('redPacketRain');
     redPacketRain.style.display = 'flex';
 
+    // Reset red packet results
+    redPacketResults = {
+        redPackets: 0,
+        freeSpins: 0,
+    };
+
     // Generate 9 to 15 red packets
     const packetCount = Math.floor(Math.random() * 7) + 9;
     for (let i = 0; i < packetCount; i++) {
@@ -269,10 +281,15 @@ function startRedPacketRain() {
         redPacketRain.style.display = 'none';
         redPacketRain.innerHTML = ''; // Clear red packets
 
+        // Show total results after red packet rain ends
+        showRedPacketResults();
+
         // If free spins were obtained, prioritize them
-        if (freeSpins > 0) {
+        if (redPacketResults.freeSpins > 0) {
+            freeSpins += redPacketResults.freeSpins;
+            document.getElementById('freespins').textContent = freeSpins;
             isFreeSpinActive = true;
-            startFreeSpin();
+            startFreeSpin(redPacketResults.freeSpins);
         } else if (isAutoSpin) {
             startAutoSpin();
         }
@@ -289,14 +306,11 @@ function handleRedPacketClick(packet) {
         const multiplier = Math.floor(Math.random() * 5) + 1;
         const reward = bet * multiplier;
         balance += reward;
-        document.getElementById('balance').textContent = balance;
-        showWinEffect(reward);
+        redPacketResults.redPackets += reward; // Record red packet reward
     } else if (rewardType < 0.9) {
         // 30% chance: Free spins (1, 2, or 3)
         const freeSpinCount = Math.floor(Math.random() * 3) + 1;
-        freeSpins += freeSpinCount;
-        document.getElementById('freespins').textContent = freeSpins;
-        showFreeSpinEffect(freeSpinCount);
+        redPacketResults.freeSpins += freeSpinCount; // Record free spins
     } else {
         // 10% chance: Special reward (double bonus)
         alert('Congratulations! You got a double bonus!');
@@ -304,6 +318,12 @@ function handleRedPacketClick(packet) {
     }
 
     packet.remove(); // Remove the packet after clicking
+}
+
+// Show total red packet results
+function showRedPacketResults() {
+    const message = `You got ${redPacketResults.redPackets} red packets and ${redPacketResults.freeSpins} free spins!`;
+    alert(message); // Show total results
 }
 
 // Free Spin Popup Logic
@@ -360,20 +380,21 @@ function handleFreeSpinOptionClick(selectedButton, allButtons) {
         isFreeSpinActive = true;
 
         // Start free spins
-        startFreeSpin();
+        startFreeSpin(freeSpinCount);
     }, 2000);
 }
 
 // Start free spins
-function startFreeSpin() {
-    if (freeSpins > 0) {
+function startFreeSpin(totalFreeSpins) {
+    if (totalFreeSpins > 0) {
         startSpin(); // Start the spin
-        freeSpins--; // Decrement free spins by 1
+        totalFreeSpins--; // Decrement the remaining free spins
+        freeSpins = totalFreeSpins; // Update the global freeSpins variable
         document.getElementById('freespins').textContent = freeSpins;
 
         // If there are remaining free spins, continue
-        if (freeSpins > 0) {
-            setTimeout(startFreeSpin, SPIN_DELAY); // Delay 1.5 seconds before next spin
+        if (totalFreeSpins > 0) {
+            setTimeout(() => startFreeSpin(totalFreeSpins), SPIN_DELAY); // Delay 1.5 seconds before next spin
         } else {
             // Free spins ended, reset the flag
             isFreeSpinActive = false;
