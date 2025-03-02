@@ -331,6 +331,9 @@ function showFreeSpinPopup() {
 
     // Bind button click events
     freeSpinButtons.forEach(button => {
+        // Remove existing event listeners to avoid duplicates
+        button.removeEventListener('click', handleFreeSpinOptionClick);
+        // Add new event listener
         button.addEventListener('click', () => handleFreeSpinOptionClick(button, freeSpinButtons));
     });
 }
