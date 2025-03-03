@@ -3,18 +3,25 @@ let freeSpins = 0;
 let comboCount = 0;
 let isSpinning = false;
 let isAutoSpin = false;
+let diamonds = 0;
 
-const symbols = ['🍊', '🍒', '🍀', '💰', '🎁', '🧧'];
+const symbols = ['🍊', '🍒', '🍀', '💰', '🎁', '🧧', '🌟'];
 const winConditions = {
     '🧧🧧🧧': { multiplier: 5, freeSpins: 3 },
     '🍀🍀🍀': { multiplier: 3, freeSpins: 2 },
     '💰💰💰': { multiplier: 2, freeSpins: 1 }
 };
 
+const shopItems = [
+    { name: '双倍奖励卡', cost: 100, effect: () => balance += 1000 },
+    { name: '免费旋转券', cost: 50, effect: () => freeSpins += 5 }
+];
+
 function updateUI() {
     document.getElementById('balance').textContent = balance;
     document.getElementById('freeSpins').textContent = freeSpins;
     document.getElementById('combo').textContent = comboCount;
+    document.getElementById('diamonds').textContent = diamonds;
     document.getElementById('spinBtn').disabled = isSpinning;
 }
 
@@ -24,7 +31,12 @@ function getRandomSymbol() {
 
 function checkWin(reels) {
     const combination = reels.join('');
-    return winConditions[combination] || null;
+    for (const [pattern, reward] of Object.entries(winConditions)) {
+        if (combination.match(new RegExp(pattern.replace(/🧧/g, '[🧧🌟]')))) {
+            return reward;
+        }
+    }
+    return null;
 }
 
 function triggerRedEnvelopeRain(count = 5) {
@@ -105,5 +117,65 @@ function toggleAutoSpin() {
     if (isAutoSpin && !isSpinning) startSpin();
 }
 
+function checkDailyReward() {
+    const lastLogin = localStorage.getItem('lastLogin');
+    const today = new Date().toDateString();
+    
+    if (lastLogin !== today) {
+        balance += 300; // 每日奖励
+        localStorage.setItem('lastLogin', today);
+        alert('每日登录奖励：¥300！');
+        updateUI();
+    }
+}
+
+function updateLeaderboard() {
+    const playerName = prompt('请输入您的名字：', '玩家1');
+    const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+    leaderboard.push({ name: playerName, balance });
+    leaderboard.sort((a, b) => b.balance - a.balance);
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard.slice(0, 5)));
+}
+
+function showLeaderboard() {
+    const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+    alert('排行榜：\n' + leaderboard.map((p, i) => `${i + 1}. ${p.name} - ¥${p.balance}`).join('\n'));
+}
+
+function inviteFriend() {
+    freeSpins += 1;
+    updateUI();
+    alert('邀请成功！获得1次免费旋转！');
+}
+
+function buyItem(index) {
+    const item = shopItems[index];
+    if (diamonds >= item.cost) {
+        diamonds -= item.cost;
+        item.effect();
+        updateUI();
+        alert(`购买成功：${item.name}！`);
+    } else {
+        alert('钻石不足！');
+    }
+}
+
+function watchAd() {
+    if (confirm('观看广告可获得100钻石，是否观看？')) {
+        diamonds += 100;
+        updateUI();
+        alert('广告观看完成，获得100钻石！');
+    }
+}
+
+function purchaseDiamonds(amount) {
+    if (confirm(`确认购买${amount}钻石？`)) {
+        diamonds += amount;
+        updateUI();
+        alert(`购买成功，获得${amount}钻石！`);
+    }
+}
+
 // 初始化
 updateUI();
+checkDailyReward();

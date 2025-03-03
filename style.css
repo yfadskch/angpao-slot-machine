@@ -61,6 +61,22 @@ body {
     cursor: not-allowed;
 }
 
+#shop {
+    margin-top: 2rem;
+    background: #2c3e50;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+#shop ul {
+    list-style: none;
+    padding: 0;
+}
+
+#shop li {
+    margin: 0.5rem 0;
+}
+
 /* 红包雨样式 */
 .red-envelope {
     position: fixed;
