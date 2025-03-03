@@ -1,68 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucky Red Envelope Slot Machine</title>
+    <title>幸运红包老虎机</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 横屏提示 -->
-    <div id="orientationWarning" class="orientation-warning">
-        Please rotate your device to landscape mode for the best experience.
-    </div>
-
-    <div class="machine-container">
-        <div class="header">
-            <h1>🎰 Lucky Red Envelope Slot Machine 🧧</h1>
-        </div>
+    <div class="game-container">
+        <h1>🎰 幸运红包老虎机</h1>
         
-        <div class="stats-panel">
-            <div class="stat-item">
-                <span class="stat-label">Balance</span>
-                <span class="stat-value" id="balance">200</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Free Spins</span>
-                <span class="stat-value" id="freespins">0</span>
-            </div>
+        <!-- 游戏状态 -->
+        <div class="status">
+            <div>余额: ¥<span id="balance">3000</span></div>
+            <div>免费次数: <span id="freeSpins">0</span></div>
+            <div>连击计数: <span id="combo">0</span></div>
         </div>
 
-        <div class="slot-area">
-            <div class="slot" id="slot1">🎰</div>
-            <div class="slot" id="slot2">🎰</div>
-            <div class="slot" id="slot3">🎰</div>
+        <!-- 老虎机滚轮 -->
+        <div class="slot-machine">
+            <div class="reel" id="reel1">🍊</div>
+            <div class="reel" id="reel2">🍒</div>
+            <div class="reel" id="reel3">🍀</div>
         </div>
 
-        <div class="control-panel">
-            <select id="betAmount" class="bet-selector">
-                <option value="10">Bet 10</option>
-                <option value="20" selected>Bet 20</option>
-                <option value="50">Bet 50</option>
-            </select>
-            <div class="button-group">
-                <button id="spinButton" class="spin-button">
-                    ▶ Spin
-                </button>
-                <button id="autoSpinButton" class="spin-button auto-spin">
-                    ⚡ Auto Spin
-                </button>
-            </div>
+        <!-- 控制按钮 -->
+        <div class="controls">
+            <button id="spinBtn" onclick="startSpin()">旋转！</button>
+            <button id="autoSpinBtn" onclick="toggleAutoSpin()">自动旋转</button>
         </div>
-    </div>
 
-    <!-- Red Packet Rain Popup -->
-    <div id="redPacketRain" class="red-packet-rain">
-        <!-- Red packets will be dynamically generated here -->
-    </div>
-
-    <!-- Free Spin Popup -->
-    <div id="freeSpinPopup" class="free-spin-popup">
-        <div class="free-spin-buttons">
-            <button class="free-spin-option">？</button>
-            <button class="free-spin-option">？</button>
-            <button class="free-spin-option">？</button>
-        </div>
+        <!-- 红包雨容器 -->
+        <div id="redEnvelopeRain"></div>
     </div>
 
     <script src="script.js"></script>
