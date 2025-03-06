@@ -29,18 +29,20 @@
         <div class="controls">
             <button id="spinBtn" onclick="startSpin()">旋转！</button>
             <button id="autoSpinBtn" onclick="toggleAutoSpin()">自动旋转</button>
-            <button onclick="inviteFriend()">邀请好友</button>
-            <button onclick="watchAd()">观看广告</button>
-            <button onclick="purchaseDiamonds(500)">购买500钻石</button>
+            <button onclick="watchAd()">观看广告领💎</button>
         </div>
 
-        <!-- 商店 -->
-        <div id="shop">
-            <h3>商店</h3>
-            <ul>
-                <li>双倍奖励卡 - 100钻石 <button onclick="buyItem(0)">购买</button></li>
-                <li>免费旋转券 - 50钻石 <button onclick="buyItem(1)">购买</button></li>
-            </ul>
+        <!-- 广告弹窗 -->
+        <div id="adModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeAd(false)">×</span>
+                <video id="adVideo" controlsList="nodownload" oncontextmenu="return false;">
+                    <source src="your-ad.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放
+                </video>
+                <p>请完整观看广告以领取奖励！</p>
+                <div id="countdown">剩余时间：<span id="time">30</span>秒</div>
+            </div>
         </div>
 
         <!-- 红包雨容器 -->
