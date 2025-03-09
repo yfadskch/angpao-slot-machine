@@ -1,54 +1,139 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>幸运红包老虎机</title>
+    <title>Slot Machine Game</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Removed audio controls panel style -->
+    <link rel="stylesheet" href="sound-selector.css">
+    <link rel="stylesheet" href="audio-tip.css">
+    <link rel="stylesheet" href="paytable-popup.css">
+    <link rel="stylesheet" href="free-game.css">
+    <link rel="stylesheet" href="betting-ui.css">
+    <link rel="stylesheet" href="spin-win-amount.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>🎰 幸运红包老虎机</h1>
+    <div class="container">
+        <h1>Lucky Slot Machine</h1>
         
-        <!-- 游戏状态 -->
-        <div class="status">
-            <div>余额: ¥<span id="balance">3000</span></div>
-            <div>免费次数: <span id="freeSpins">0</span></div>
-            <div>连击计数: <span id="combo">0</span></div>
-            <div>钻石: 💎<span id="diamonds">0</span></div>
-        </div>
-
-        <!-- 老虎机滚轮 -->
         <div class="slot-machine">
-            <div class="reel" id="reel1">🍊</div>
-            <div class="reel" id="reel2">🍒</div>
-            <div class="reel" id="reel3">🍀</div>
-        </div>
-
-        <!-- 控制按钮 -->
-        <div class="controls">
-            <button id="spinBtn" onclick="startSpin()">旋转！</button>
-            <button id="autoSpinBtn" onclick="toggleAutoSpin()">自动旋转</button>
-            <button onclick="watchAd()">观看广告领💎</button>
-        </div>
-
-        <!-- 广告弹窗 -->
-        <div id="adModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeAd(false)">×</span>
-                <video id="adVideo" controlsList="nodownload" oncontextmenu="return false;">
-                    <source src="your-ad.mp4" type="video/mp4">
-                    您的浏览器不支持视频播放
-                </video>
-                <p>请完整观看广告以领取奖励！</p>
-                <div id="countdown">剩余时间：<span id="time">30</span>秒</div>
+            <div class="credit-info">
+                <div class="balance">Balance: <span id="balance">1000</span> coins</div>
+                <div class="free-spins">Free Spins: <span id="free-spins-count">0</span></div>
+            </div>
+            
+            <div class="reels-container">
+                <div class="reel" id="reel1">
+                    <div class="symbols">
+                        <div class="symbol">🍒</div>
+                        <div class="symbol">🍋</div>
+                        <div class="symbol">🍊</div>
+                        <div class="symbol">🍇</div>
+                        <div class="symbol">🍉</div>
+                        <div class="symbol">💎</div>
+                        <div class="symbol">7️⃣</div>
+                        <div class="symbol">🎟️</div>
+                        <div class="symbol">🧧</div>
+                    </div>
+                </div>
+                <div class="reel" id="reel2">
+                    <div class="symbols">
+                        <div class="symbol">🍒</div>
+                        <div class="symbol">🍋</div>
+                        <div class="symbol">🍊</div>
+                        <div class="symbol">🍇</div>
+                        <div class="symbol">🍉</div>
+                        <div class="symbol">💎</div>
+                        <div class="symbol">7️⃣</div>
+                        <div class="symbol">🎟️</div>
+                        <div class="symbol">🧧</div>
+                    </div>
+                </div>
+                <div class="reel" id="reel3">
+                    <div class="symbols">
+                        <div class="symbol">🍒</div>
+                        <div class="symbol">🍋</div>
+                        <div class="symbol">🍊</div>
+                        <div class="symbol">🍇</div>
+                        <div class="symbol">🍉</div>
+                        <div class="symbol">💎</div>
+                        <div class="symbol">7️⃣</div>
+                        <div class="symbol">🎟️</div>
+                        <div class="symbol">🧧</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result" id="result">Let's start the game!</div>
+            
+            <div class="betting-ui">
+                <div class="betting-title">Adjust Bet Amount</div>
+                <div class="betting-controls">
+                    <button class="bet-btn min" id="bet-min">Min</button>
+                    <button class="bet-btn" id="bet-less">-</button>
+                    <div class="bet-amount"><span id="current-bet">10</span> coins</div>
+                    <button class="bet-btn" id="bet-more">+</button>
+                    <button class="bet-btn max" id="bet-max">Max</button>
+                </div>
+                <div class="bet-slider-container">
+                    <input type="range" class="bet-slider" id="bet-slider" min="5" max="100" step="5" value="10">
+                </div>
+            </div>
+            
+            <div class="controls-container">
+                <div class="auto-spin-input">
+                    <label for="auto-spin-count">Auto Spin Count:</label>
+                    <input type="number" id="auto-spin-count" min="1" max="100" value="10">
+                </div>
+                <div class="spin-buttons">
+                    <button id="spin" class="btn spin-btn">Spin!</button>
+                    <button id="auto-spin" class="btn auto-spin-btn">Auto Spin</button>
+                    <button id="stop-auto-spin" class="btn stop-btn" disabled>Stop</button>
+                </div>
+            </div>
+            
+            <div class="audio-toggle">
+                <button class="toggle-btn active" id="bgm-toggle">🔊</button>
+                <button class="toggle-btn active" id="sfx-toggle">🎵</button>
+            </div>
+            <div class="sound-selector">
+                <label>Spin Speed</label>
+                <select id="spin-speed-selector">
+                    <option value="3">Normal (3s)</option>
+                    <option value="2">Fast (2s)</option>
+                    <option value="1">Very Fast (1s)</option>
+                    <option value="0.5">Ultra Fast (0.5s)</option>
+                </select>
+            </div>
+            
+            <div class="paytable-container">
+                <div class="info-button" id="info-button">i</div>
+            </div>
+            
+            <!-- Paytable Modal -->
+            <div class="paytable-modal" id="paytable-modal">
+                <div class="paytable-content">
+                    <button class="close-paytable" id="close-paytable">×</button>
+                    <h3>Paytable</h3>
+                    <div class="paytable-grid">
+                        <div class="pay-item"><span>🍒🍒🍒</span> = <span>Bet x 10</span></div>
+                        <div class="pay-item"><span>🍋🍋🍋</span> = <span>Bet x 15</span></div>
+                        <div class="pay-item"><span>🍊🍊🍊</span> = <span>Bet x 20</span></div>
+                        <div class="pay-item"><span>🍇🍇🍇</span> = <span>Bet x 25</span></div>
+                        <div class="pay-item"><span>🍉🍉🍉</span> = <span>Bet x 30</span></div>
+                        <div class="pay-item"><span>💎💎💎</span> = <span>Bet x 50</span></div>
+                        <div class="pay-item"><span>7️⃣7️⃣7️⃣</span> = <span>Bet x 100</span></div>
+                        <div class="pay-item"><span>🎟️🎟️🎟️</span> = <span>Free Spins</span></div>
+                        <div class="pay-item"><span>🧧🧧🧧</span> = <span>Bet x 20 + Red Packet Rain</span></div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- 红包雨容器 -->
-        <div id="redEnvelopeRain"></div>
     </div>
-
-    <script src="script.js"></script>
+    
+    <div id="red-packet-container" class="red-packet-container"></div>
+    
+    <script src="script-en.js"></script>
 </body>
 </html>
